@@ -1,5 +1,7 @@
+use std::time::Duration;
+
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow};
+use gtk::{Application, ApplicationWindow, Button};
 
 const APP_ID: &str = "id.artemtech.gtk_rs.HelloWorld";
 
@@ -15,10 +17,26 @@ fn main() {
 }
 
 fn build_ui(app: &Application) {
+    // create button
+    let button = Button::builder()
+        .label("Press me!")
+        .margin_top(12)
+        .margin_bottom(12)
+        .margin_start(12)
+        .margin_end(12)
+        .build();
+    // add event listener to button
+    button.connect_clicked(move |button| {
+        // change button to label
+        button.set_label("Hello World!");
+        std::thread::sleep(Duration::from_secs(10));
+        button.set_label("Press me!");
+    });
     // create a window and title
     let window = ApplicationWindow::builder()
         .application(app)
         .title("Hello World Rust Gtk4")
+        .child(&button)
         .build();
 
     // display our window
